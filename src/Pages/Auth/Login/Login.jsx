@@ -3,21 +3,23 @@ import { useForm } from "react-hook-form";
 import { FaEnvelope, FaLock, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import { toast } from "react-toastify";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const {signInUser}=useAuth();
-    const [showPassword, setShowPassword] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
+    const location = useLocation();
+    const Navigate = useNavigate()
 
   const handleLogin = (data) => {
     console.log("login data", data);
     const {email,password}= data;
     signInUser(email,password)
     .then(res =>{
+        Navigate(location?.state || "/")
         toast.success("your login successfully ")
         console.log(res.user);
     })
@@ -103,7 +105,7 @@ const Login = () => {
         {/* Register Link */}
         <p className="text-sm text-gray-500 text-center">
           Don’t have an account?{" "}
-          <Link to={"/register"} className="text-lime-500 cursor-pointer">Register</Link>
+          <Link state={location.state} to={"/register"} className="text-lime-500 cursor-pointer">Register</Link>
         </p>
 
         {/* Divider */}

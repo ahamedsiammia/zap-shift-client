@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../hooks/useAuth";
 import { FaUser, FaEnvelope, FaLock, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import { toast } from "react-toastify";
 import axios from "axios";
@@ -11,6 +11,8 @@ const Register = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const { registerUser ,updateUserProfile} = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const location = useLocation();
+  const Navigate = useNavigate();
 
   const handleRegister = (data) => {
     console.log(data);
@@ -18,7 +20,6 @@ const Register = () => {
     const { email, password ,name} = data;
     registerUser(email, password)
       .then(result => {
-        toast.success("Your Register is successfully");
         console.log(result.user);
         // store the image and get the photo url 
         const formData = new FormData()
@@ -38,7 +39,9 @@ const Register = () => {
 
           updateUserProfile(userProfile)
           .then(() => {
-            console.log("user profile update done");
+                    toast.success("Your Register is successfully");
+                    console.log("user profile update done");
+                    Navigate(location?.state || "/")
           })
           .then(error => {
             console.log(error);

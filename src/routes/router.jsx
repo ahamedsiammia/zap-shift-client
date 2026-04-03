@@ -11,6 +11,8 @@ import Success from "../Pages/About/About/Success";
 import AuthLayout from "../Layout/AuthLayout";
 import Login from "../Pages/Auth/Login/Login";
 import Register from "../Pages/Auth/Register/Register";
+import PrivetRoutes from "./PrivetRoutes";
+import Rider from "../Pages/Rider/Rider";
 
 export const router = createBrowserRouter([
   {
@@ -29,6 +31,15 @@ export const router = createBrowserRouter([
           path:'/about',
           Component: AboutUs
         },
+        {
+          path:"/rider",
+          element: <PrivetRoutes>
+            <Rider></Rider>
+          </PrivetRoutes>
+          // element: 
+          //   <Rider></Rider>
+          
+        }
         
     ]
   },

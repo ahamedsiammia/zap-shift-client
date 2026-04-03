@@ -48,7 +48,7 @@ const NavBar = () => {
       user ? <button onClick={handleLogOut} className="btn">logOut</button> : <Link className='btn' to="/login">Login </Link>
     }
 
-    <Link className='btn btn-primary text-black mx-3' to="/login">Be a rider</Link>
+    <Link className='btn btn-primary text-black mx-3' to="/rider">Be a rider</Link>
 
     <div className="rounded-full bg-black text-white p-1.5">
     <MdArrowOutward size={28} />
