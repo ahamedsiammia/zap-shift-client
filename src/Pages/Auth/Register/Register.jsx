@@ -5,16 +5,17 @@ import { FaUser, FaEnvelope, FaLock, FaGoogle, FaEye, FaEyeSlash } from "react-i
 import { Link } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const Register = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const { registerUser } = useAuth();
+  const { registerUser ,updateUserProfile} = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleRegister = (data) => {
     console.log(data);
-    const profileImage = data.photo[0];
-    const { email, password } = data;
+    const profileImage= data.photo[0]
+    const { email, password ,name} = data;
     registerUser(email, password)
       .then(result => {
         toast.success("Your Register is successfully");
@@ -23,9 +24,27 @@ const Register = () => {
         const formData = new FormData()
         formData.append("image",profileImage);
 
-        
+        axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`,formData)
+        .then( res =>{
+          console.log(res.data.data);
+          const url = res.data.data.url;
+          console.log("lskdfjs;odlkfhw;eoihklsdjfn",url);
+          // update user profile
 
-        // update user profile
+          const userProfile = {
+            displayName: name,
+            photoURL: url,
+          }
+
+          updateUserProfile(userProfile)
+          .then(() => {
+            console.log("user profile update done");
+          })
+          .then(error => {
+            console.log(error);
+          })
+        })
+
       })
       .then(error => {
         console.log(error);
