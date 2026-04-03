@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AuthContext } from './AuthContext';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut,updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut,updateProfile } from 'firebase/auth';
 import { auth } from '../../firebase/firebase.init';
 import { GoogleAuthProvider } from "firebase/auth";
 
@@ -39,6 +39,11 @@ const AuthProvider = ({children}) => {
     const updateUserProfile =(profile)=>{
         return updateProfile(auth.currentUser,profile)
     }
+    // send a password reset email 
+    const pinResetEmail =(email)=>{
+        setLoading(true);
+        return sendPasswordResetEmail(auth,email);
+    }
 
     // observed user state 
     useEffect(()=>{
@@ -59,7 +64,8 @@ const AuthProvider = ({children}) => {
         registerUser,
         signInUser,
         googleLogin,
-        logOut
+        logOut,
+        pinResetEmail,
     }
 
     return (

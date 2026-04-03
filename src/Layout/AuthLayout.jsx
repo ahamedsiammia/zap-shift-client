@@ -5,7 +5,7 @@ import authimage from '../assets/authImage.png';
 
 const AuthLayout = () => {
   return (
-    <div className='min-h-screen bg-[#E8F6BD] px-4 md:px-8 lg:px-12'>
+    <div className='min-h-screen bg-[#E8F6BD] px-4 md:px-8 lg:px-12 p-5'>
       <div className='max-w-7xl mx-auto'>
         <Logo />
 

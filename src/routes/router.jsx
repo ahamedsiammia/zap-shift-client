@@ -13,6 +13,7 @@ import Login from "../Pages/Auth/Login/Login";
 import Register from "../Pages/Auth/Register/Register";
 import PrivetRoutes from "./PrivetRoutes";
 import Rider from "../Pages/Rider/Rider";
+import ForgetPassword from "../Pages/Auth/ForgetPassword/ForgetPassword";
 
 export const router = createBrowserRouter([
   {
@@ -36,11 +37,7 @@ export const router = createBrowserRouter([
           element: <PrivetRoutes>
             <Rider></Rider>
           </PrivetRoutes>
-          // element: 
-          //   <Rider></Rider>
-          
         }
-        
     ]
   },
   {
@@ -54,7 +51,12 @@ export const router = createBrowserRouter([
       {
         path:"/register",
         Component: Register
-      } 
+      },
+        {
+          path:"/forget-password",
+          Component:ForgetPassword
+        }
+        
     ]
   }
 

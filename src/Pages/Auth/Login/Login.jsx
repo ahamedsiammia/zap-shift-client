@@ -92,9 +92,9 @@ const Login = () => {
 
         {/* Forgot Password */}
         <div className="">
-          <a className="text-sm text-lime-500 cursor-pointer hover:underline">
+          <Link to="/forget-password" className="text-sm text-lime-500 cursor-pointer hover:underline">
             Forgot password?
-          </a>
+          </Link>
         </div>
 
         {/* Button */}
