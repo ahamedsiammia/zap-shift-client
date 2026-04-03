@@ -4,6 +4,7 @@ import useAuth from "../../../hooks/useAuth";
 import { FaUser, FaEnvelope, FaLock, FaGoogle, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -12,11 +13,19 @@ const Register = () => {
 
   const handleRegister = (data) => {
     console.log(data);
+    const profileImage = data.photo[0];
     const { email, password } = data;
     registerUser(email, password)
       .then(result => {
-        alert("new user created ");
+        toast.success("Your Register is successfully");
         console.log(result.user);
+        // store the image and get the photo url 
+        const formData = new FormData()
+        formData.append("image",profileImage);
+
+        
+
+        // update user profile
       })
       .then(error => {
         console.log(error);
@@ -34,7 +43,10 @@ const Register = () => {
         Register with ZapShift
       </p>
 
-      {/* Avatar Icon */}
+      
+      {/* Form */}
+      <form onSubmit={handleSubmit(handleRegister)} className="space-y-4">
+        {/* Avatar Icon */}
       <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-4 mx-auto sm:mx-0 relative overflow-hidden cursor-pointer">
 
         {/* Hidden Input */}
@@ -50,8 +62,6 @@ const Register = () => {
       
       </div>
 
-      {/* Form */}
-      <form onSubmit={handleSubmit(handleRegister)} className="space-y-4">
 
         {/* Name */}
         <div>

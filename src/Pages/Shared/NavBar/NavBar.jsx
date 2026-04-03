@@ -1,13 +1,28 @@
 import React from 'react';
 import Logo from '../../../Components/Logo/Logo';
-import { NavLink } from 'react-router';
+import { Link, NavLink } from 'react-router';
+import useAuth from '../../../hooks/useAuth';
+import { toast } from 'react-toastify';
+import { MdArrowOutward } from 'react-icons/md';
 
 const NavBar = () => {
+  const {user,logOut}=useAuth()
     const links = <>
         <li><NavLink to="/">Services</NavLink></li>
         <li><NavLink to="/about">About us</NavLink></li>
         <li><NavLink to="/coverage">Coverage</NavLink></li>
     </>
+
+    const handleLogOut =()=>{
+      logOut()
+      .then(res =>{
+        toast.success("your logOut successfully")
+        console.log(res);
+      })
+      .then(error =>{
+        console.log(error);
+      })
+    }
     return (
         <div className="navbar bg-base-100 shadow-sm">
   <div className="navbar-start">
@@ -29,7 +44,16 @@ const NavBar = () => {
     </ul>
   </div>
   <div className="navbar-end">
-    <a className="btn">Button</a>
+    {
+      user ? <button onClick={handleLogOut} className="btn">logOut</button> : <Link className='btn' to="/login">Login </Link>
+    }
+
+    <Link className='btn btn-primary text-black mx-3' to="/login">Be a rider</Link>
+
+    <div className="rounded-full bg-black text-white p-1.5">
+    <MdArrowOutward size={28} />
+
+    </div>
   </div>
 </div>
     );

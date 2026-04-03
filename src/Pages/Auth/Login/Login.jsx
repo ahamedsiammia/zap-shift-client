@@ -5,6 +5,7 @@ import { useState } from "react";
 import useAuth from "../../../hooks/useAuth";
 import { Link } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -17,7 +18,7 @@ const Login = () => {
     const {email,password}= data;
     signInUser(email,password)
     .then(res =>{
-        alert("your login successfully ")
+        toast.success("your login successfully ")
         console.log(res.user);
     })
     .then(error =>{
