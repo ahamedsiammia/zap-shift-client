@@ -1,6 +1,7 @@
 import React from "react";
 import { set, useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
+import Swal from "sweetalert2";
 
 const SendParcel = () => {
   const {
@@ -46,6 +47,22 @@ const SendParcel = () => {
             cost = minCharge + extraCharge;
         }
     }
+
+        Swal.fire({
+      title: "Agree with the cost?",
+      text: `You will be charged ${cost} taka!`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "I Agree!"
+    }).then((result) => {
+      if (result.isConfirmed) Swal.fire({
+        title: "Deleted!",
+        text: "Your file has been deleted.",
+        icon: "success"
+      });
+    });
 
     console.log(cost);
   };
