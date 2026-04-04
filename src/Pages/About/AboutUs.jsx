@@ -1,6 +1,7 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { NavLink, useLocation } from "react-router";
+import { FaHandPointUp } from "react-icons/fa";
 
 const AboutUs = () => {
   const location = useLocation();
@@ -51,6 +52,11 @@ const AboutUs = () => {
           </NavLink>
         ))}
       </div>
+     
+      <div className="flex gap-2 text-2xl font-bold" >
+        Please click <span className="text-lime-500"><FaHandPointUp /></span> and visit our achievement
+      </div>
+     
 
       {/* Smooth Route Transition Area */}
       <div className="mt-5 overflow-hidden">
