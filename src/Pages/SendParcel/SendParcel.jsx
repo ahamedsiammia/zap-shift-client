@@ -2,16 +2,21 @@ import React from "react";
 import { set, useForm, useWatch } from "react-hook-form";
 import { useLoaderData } from "react-router";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
+import useAuth from "../../hooks/useAuth";
 
 const SendParcel = () => {
   const {
     register,
     handleSubmit,
     watch,
+    reset,
     control,
-    formState: { errors },
   } = useForm();
 
+  const axiosSecure = useAxiosSecure()
+  const {user}= useAuth();
+  
   const serviceCenters = useLoaderData();
   const regionsDuplicat = serviceCenters.map((c) => c.region);
   const region = [...new Set(regionsDuplicat)];
@@ -57,13 +62,23 @@ const SendParcel = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "I Agree!"
     }).then((result) => {
-      if (result.isConfirmed) Swal.fire({
-        title: "Deleted!",
-        text: "Your file has been deleted.",
-        icon: "success"
-      });
+      if (result.isConfirmed){
+
+        // save the parcel info to the database
+        axiosSecure.post("/parcels",data)
+        .then(res=>{
+          console.log("after send data",res.data);
+        })
+        reset()
+        // Swal.fire({
+        //   title: "Deleted!",
+        //   text: "Your file has been deleted.",
+        //   icon: "success"
+        // });
+      } 
     });
 
+    
     console.log(cost);
   };
 
@@ -128,7 +143,12 @@ const SendParcel = () => {
 
             <div>
               <label className="text-sm">Sender Name</label>
-              <input {...register("senderName")} className="input-style mt-1" />
+              <input {...register("senderName")} defaultValue={user?.displayName} className="input-style mt-1" />
+            </div>
+
+            <div>
+              <label className="text-sm">Sender Email</label>
+              <input {...register("senderEmail")} defaultValue={user?.email} className="input-style mt-1" />
             </div>
 
             <div>
@@ -195,6 +215,11 @@ const SendParcel = () => {
                 {...register("receiverName")}
                 className="input-style mt-1"
               />
+            </div>
+
+            <div>
+              <label className="text-sm">Receiver Email</label>
+              <input {...register("receiverEmail")}  className="input-style mt-1" />
             </div>
 
             <div>

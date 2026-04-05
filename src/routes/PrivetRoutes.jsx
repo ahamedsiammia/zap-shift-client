@@ -1,6 +1,7 @@
 import React from 'react';
 import useAuth from '../hooks/useAuth';
 import { Navigate, useLocation } from 'react-router';
+import LoadingPage from '../Pages/Loading/Loading';
 
 const PrivetRoutes = ({children}) => {
     const {user,loading}=useAuth();
@@ -8,7 +9,7 @@ const PrivetRoutes = ({children}) => {
     console.log("location",location);
     
     if(loading){
-        return <p className="text-4xl">loading...</p>
+        return <LoadingPage></LoadingPage>
     }
 
     if(!user){
