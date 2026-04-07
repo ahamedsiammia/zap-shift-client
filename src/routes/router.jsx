@@ -15,6 +15,8 @@ import PrivetRoutes from "./PrivetRoutes";
 import Rider from "../Pages/Rider/Rider";
 import ForgetPassword from "../Pages/Auth/ForgetPassword/ForgetPassword";
 import SendParcel from "../Pages/SendParcel/SendParcel";
+import DashboardLayout from "../Layout/DashboardLayout";
+import MyParcels from "../Pages/Dashboard/MyParcels/MyParcels";
 
 export const router = createBrowserRouter([
   {
@@ -65,6 +67,16 @@ export const router = createBrowserRouter([
           Component:ForgetPassword
         }
         
+    ]
+  },
+  {
+    path:"/dashboard",
+    element: <PrivetRoutes><DashboardLayout></DashboardLayout></PrivetRoutes>,
+    children:[
+      {
+        path:"my-parcels",
+        Component: MyParcels
+      }
     ]
   }
 
