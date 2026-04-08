@@ -51,6 +51,7 @@ const SendParcel = () => {
             const extraCharge = isSameDistricts ? extraWeight*40 : extraWeight*40+40;
             cost = minCharge + extraCharge;
         }
+
     }
 
         Swal.fire({
@@ -70,16 +71,18 @@ const SendParcel = () => {
           console.log("after send data",res.data);
         })
         reset()
-        // Swal.fire({
-        //   title: "Deleted!",
-        //   text: "Your file has been deleted.",
-        //   icon: "success"
-        // });
+        Swal.fire({
+          title: "Request !",
+          text: "Your Request has been Success.",
+          icon: "success"
+        });
       } 
     });
 
     
     console.log(cost);
+   
+     data.cost = cost ;
   };
 
   return (
