@@ -17,6 +17,7 @@ import ForgetPassword from "../Pages/Auth/ForgetPassword/ForgetPassword";
 import SendParcel from "../Pages/SendParcel/SendParcel";
 import DashboardLayout from "../Layout/DashboardLayout";
 import MyParcels from "../Pages/Dashboard/MyParcels/MyParcels";
+import Payment from "../Pages/Dashboard/Payment/Payment";
 
 export const router = createBrowserRouter([
   {
@@ -76,6 +77,10 @@ export const router = createBrowserRouter([
       {
         path:"my-parcels",
         Component: MyParcels
+      },
+      {
+        path:"payment/:parcelId",
+        Component: Payment
       }
     ]
   }
