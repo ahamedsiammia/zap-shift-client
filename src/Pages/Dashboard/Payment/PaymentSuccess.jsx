@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 import { CheckCircle } from 'lucide-react';
 
 const emojis = ["🎉", "✨", "🎊", "💫", "🌟"];
-const items = Array.from({ length: 40 });
+const items = Array.from({ length: 90 });
 
 
 const PaymentSuccess = () => {
@@ -26,8 +26,9 @@ const PaymentSuccess = () => {
         if(sessionId){
             axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
             .then(res =>{
-                setInfo(res.data.session.created);
-               setCost(res.data.session.amount_total)
+                setInfo(res.data.trackingId);
+               setCost(res.data.amount)
+               console.log(res.data);
             })
         }
     },[sessionId,axiosSecure])
@@ -117,29 +118,29 @@ const PaymentSuccess = () => {
         {/* Details */}
         <div className="mt-4 bg-white/10 rounded-lg p-3 text-sm space-y-2">
           <div className="flex justify-between ">
-            <span className="text-gray-300">Order ID:</span>
+            <span className="text-gray-300">Tracking ID:</span>
             <span>{info}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-300">Total Amount:</span>
-            <span>{cost/100}</span>
+            <span>{cost}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-gray-300">Method:</span>
             <span>Credit Card</span>
           </div>
           {/* <div className="flex justify-between">
-            <span className="text-gray-300">Estimated Delivery:</span>
-            <span>Oct 28th, 2023</span>
+            <span className="text-gray-300">Payment Time:</span>
+            <span> { new Date().toLocaleTimeString() } </span>
           </div> */}
         </div>
 
         {/* Buttons */}
         <div className="flex gap-3 mt-5">
-          <button className="flex-1 bg-green-400 text-black text-sm py-2 rounded-full shadow-lg hover:scale-105 transition">
+          {/* <button className="flex-1 bg-green-400 text-black text-sm py-2 rounded-full shadow-lg hover:scale-105 transition">
             Track Your Order
-          </button>
-          <Link to={"/"} className="flex-1 border border-white/30 py-2 rounded-full hover:bg-white/10 transition">
+          </button> */}
+          <Link to={"/"} className="flex-1 border text-center border-white/30 py-2 rounded-full hover:bg-white/10 transition">
             Go to Home
           </Link>
         </div>

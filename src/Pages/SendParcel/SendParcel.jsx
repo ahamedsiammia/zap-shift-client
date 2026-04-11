@@ -1,88 +1,83 @@
 import React from "react";
 import { set, useForm, useWatch } from "react-hook-form";
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import Swal from "sweetalert2";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
 
 const SendParcel = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    reset,
-    control,
-  } = useForm();
+  const { register, handleSubmit, watch, reset, control } = useForm();
 
-  const axiosSecure = useAxiosSecure()
-  const {user}= useAuth();
-  
+  const axiosSecure = useAxiosSecure();
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
   const serviceCenters = useLoaderData();
   const regionsDuplicat = serviceCenters.map((c) => c.region);
   const region = [...new Set(regionsDuplicat)];
 
-  const senderRegion = useWatch({control,name:"senderRegion"});
-  const receiverRegion = useWatch({control,name:"receiverRegion"})
+  const senderRegion = useWatch({ control, name: "senderRegion" });
+  const receiverRegion = useWatch({ control, name: "receiverRegion" });
 
-  const districtByRegion =(region)=>{
-    const regionDistricts = serviceCenters.filter( c => c.region === region);
-    const district = regionDistricts.map(d => d.district);
+  const districtByRegion = (region) => {
+    const regionDistricts = serviceCenters.filter((c) => c.region === region);
+    const district = regionDistricts.map((d) => d.district);
     // console.log(district);
     return district;
-  }
+  };
   const hanldeSendParcel = (data) => {
-      
-      console.log(data);
-      const isDocument = data.type === "document";
+    console.log(data);
+    const isDocument = data.type === "document";
     const isSameDistricts = data.senderDistrict === data.receiverDistrict;
-    const parcelWeight = parseFloat(data.weight)
+    const parcelWeight = parseFloat(data.weight);
 
     let cost = 0;
-    if(isDocument){
-        cost = isSameDistricts ? 60 : 80 ;
+    if (isDocument) {
+      cost = isSameDistricts ? 60 : 80;
+    } else {
+      if (parcelWeight < 3) {
+        cost = isSameDistricts ? 110 : 150;
+      } else {
+        const minCharge = isSameDistricts ? 110 : 150;
+        const extraWeight = parcelWeight - 3;
+        const extraCharge = isSameDistricts
+          ? extraWeight * 40
+          : extraWeight * 40 + 40;
+        cost = minCharge + extraCharge;
+      }
     }
-    else{
-        if(parcelWeight < 3){
-            cost = isSameDistricts ? 110 : 150;
-        }
-        else{
-            const minCharge = isSameDistricts ? 110 : 150 ;
-            const extraWeight = parcelWeight - 3 ;
-            const extraCharge = isSameDistricts ? extraWeight*40 : extraWeight*40+40;
-            cost = minCharge + extraCharge;
-        }
 
-    }
-
-        Swal.fire({
+    Swal.fire({
       title: "Agree with the cost?",
       text: `You will be charged ${cost} taka!`,
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "I Agree!"
+      confirmButtonText: "I Agree!",
     }).then((result) => {
-      if (result.isConfirmed){
-
+      if (result.isConfirmed) {
         // save the parcel info to the database
-        axiosSecure.post("/parcels",data)
-        .then(res=>{
-          console.log("after send data",res.data);
-        })
-        reset()
-        Swal.fire({
-          title: "Request !",
-          text: "Your Request has been Success.",
-          icon: "success"
+        axiosSecure.post("/parcels", data).then((res) => {
+          console.log("after send data", res.data);
+          if (res.data.insertedId) {
+            navigate("/dashboard/my-parcels");
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Parcel has been created . Please Pay",
+              showConfirmButton: false,
+              timer: 2500,
+            });
+            reset();
+          }
         });
-      } 
+      }
     });
 
-    
     console.log(cost);
-   
-     data.cost = cost ;
+
+    data.cost = cost;
   };
 
   return (
@@ -146,12 +141,20 @@ const SendParcel = () => {
 
             <div>
               <label className="text-sm">Sender Name</label>
-              <input {...register("senderName")} defaultValue={user?.displayName} className="input-style mt-1" />
+              <input
+                {...register("senderName")}
+                defaultValue={user?.displayName}
+                className="input-style mt-1"
+              />
             </div>
 
             <div>
               <label className="text-sm">Sender Email</label>
-              <input {...register("senderEmail")} defaultValue={user?.email} className="input-style mt-1" />
+              <input
+                {...register("senderEmail")}
+                defaultValue={user?.email}
+                className="input-style mt-1"
+              />
             </div>
 
             <div>
@@ -188,16 +191,14 @@ const SendParcel = () => {
               <label className="text-sm">District</label>
               <select
                 {...register("senderDistrict")}
-                className="input-style mt-1" 
+                className="input-style mt-1"
               >
-                <option  value="">Select your District</option>
+                <option value="">Select your District</option>
                 {districtByRegion(senderRegion).map((r, i) => (
                   <option key={i}>{r}</option>
                 ))}
               </select>
             </div>
-
-
 
             <div>
               <label className="text-sm">Pickup Instruction</label>
@@ -222,7 +223,10 @@ const SendParcel = () => {
 
             <div>
               <label className="text-sm">Receiver Email</label>
-              <input {...register("receiverEmail")}  className="input-style mt-1" />
+              <input
+                {...register("receiverEmail")}
+                className="input-style mt-1"
+              />
             </div>
 
             <div>
@@ -240,7 +244,7 @@ const SendParcel = () => {
                 className="input-style mt-1"
               />
             </div>
-                {/* receiver regions  */}
+            {/* receiver regions  */}
             <div>
               <label className="text-sm">Regions</label>
               <select
@@ -248,9 +252,11 @@ const SendParcel = () => {
                 className="input-style mt-1"
               >
                 <option value="">Select your district</option>
-                {
-                    region.map((r,i)=><option key={i} value={r}>{r}</option>)
-                }
+                {region.map((r, i) => (
+                  <option key={i} value={r}>
+                    {r}
+                  </option>
+                ))}
               </select>
             </div>
 
@@ -259,15 +265,14 @@ const SendParcel = () => {
               <label className="text-sm">District</label>
               <select
                 {...register("receiverDistrict")}
-                className="input-style mt-1" 
+                className="input-style mt-1"
               >
-                <option  value="">Select your District</option>
+                <option value="">Select your District</option>
                 {districtByRegion(receiverRegion).map((r, i) => (
                   <option key={i}>{r}</option>
                 ))}
               </select>
             </div>
-
 
             <div>
               <label className="text-sm">Delivery Instruction</label>
