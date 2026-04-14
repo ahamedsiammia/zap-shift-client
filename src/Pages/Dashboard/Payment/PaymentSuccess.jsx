@@ -21,8 +21,8 @@ const PaymentSuccess = () => {
   }, []);
 
     
-    console.log(sessionId);
-    useEffect(()=>{
+    console.log(sessionId); 
+    useEffect(()=>{ 
         if(sessionId){
             axiosSecure.patch(`/payment-success?session_id=${sessionId}`)
             .then(res =>{
