@@ -40,7 +40,7 @@ const PaymentSuccess = () => {
       {show && (
         <div className="absolute inset-0 pointer-events-none">
           {items.map((_, i) => {
-            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+            const randomEmoji = emojis[Math.floor(Math.random()* emojis.length)];
             return (
               <motion.div
                 key={i}
