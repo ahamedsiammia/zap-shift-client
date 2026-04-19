@@ -49,7 +49,7 @@ const SendParcel = () => {
 
     Swal.fire({
       title: "Agree with the cost?",
-      text: `You will be charged ${cost} taka!`,
+      text: `You will be charged ${cost} taka!`, 
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
