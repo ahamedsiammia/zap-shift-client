@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../SocialLogin/SocialLogin";
 import { toast } from "react-toastify";
 import axios from "axios";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const Register = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -13,23 +14,35 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const location = useLocation();
   const Navigate = useNavigate();
+  const axiosSecure = useAxiosSecure();
 
   const handleRegister = (data) => {
-    console.log(data);
     const profileImage= data.photo[0]
     const { email, password ,name} = data;
     registerUser(email, password)
-      .then(result => {
-        console.log(result.user);
+      .then(() => {
         // store the image and get the photo url 
         const formData = new FormData()
         formData.append("image",profileImage);
 
         axios.post(`https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_image_host_key}`,formData)
         .then( res =>{
-          console.log(res.data.data);
           const url = res.data.data.url;
           console.log("lskdfjs;odlkfhw;eoihklsdjfn",url);
+
+          // create user with database
+          const userInfo = {
+            displayName: name,
+            photoURL: url,
+            email : email
+          }
+          axiosSecure.post("/users",userInfo)
+          .then((res)=>{
+            if(res.data.insertedId){
+              console.log("user created in the database");
+            }
+          })
+
           // update user profile
 
           const userProfile = {
