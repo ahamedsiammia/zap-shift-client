@@ -33,8 +33,8 @@ const ApproveRider = () => {
               <th>Actions Color</th>
             </tr>
           </thead>
-          <tbody>
-            {riders.map((rider, index) => (
+          <tbody> 
+            {riders.map((rider, index) => ( 
               <tr>
                 <th>{index + 1}</th>
                 <td>{rider.name}</td>
