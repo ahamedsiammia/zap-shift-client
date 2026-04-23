@@ -26,10 +26,10 @@ const HowItWork = () => {
        <div className='max-w-6xl mx-auto my-20'>
         <h1 className='font-bold text-3xl'>How it Work</h1>
          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 mt-5'>
-          { data.map(singleData =>
+          { data.map((singleData,index) =>
          
-            <div className=' p-5 rounded-2xl bg-white '>
-                <img src={singleData.image} alt="" />
+            <div key={index} className=' p-5 rounded-2xl bg-white '>
+                <img src={singleData.title} alt="" />
             <p className='font-bold mt-3 mb-3'>{singleData.title}</p>
             <p>{singleData.description}</p>
             </div>

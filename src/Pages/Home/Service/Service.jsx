@@ -45,8 +45,8 @@ const Service = () => {
         </p>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 p-10 gap-5 ">
-        {data.map(singleData =>
-            <div className="bg-white rounded-2xl text-center hover:bg-primary p-5 ">
+        {data.map((singleData,index) =>
+            <div key={index} className="bg-white rounded-2xl text-center hover:bg-primary p-5 ">
                <div className="flex justify-center  hover-3d">
                  <img className="h-40px w-40px bg-gray-300 rounded-full p-5 mt-5" src={singleData.image} alt="" />
                </div>
