@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, Outlet } from 'react-router';
 import Logo from '../Components/Logo/Logo';
-import { FaAlignLeft, FaCreditCard, FaHome, FaMotorcycle, FaParachuteBox } from 'react-icons/fa';
+import { FaAlignLeft, FaCreditCard, FaHome, FaMotorcycle, FaParachuteBox, FaUser } from 'react-icons/fa';
 import { IoSettings } from "react-icons/io5";
 
 const DashboardLayout = () => {
@@ -55,6 +55,13 @@ const DashboardLayout = () => {
             <Link to="/dashboard/approve-rider" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Approve Rider">
            <FaMotorcycle />
              <span className="is-drawer-close:hidden">approve-rider</span>
+            </Link>
+        </li>
+
+        <li>
+            <Link to="/dashboard/user-management" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="User Management">
+           <FaUser />
+             <span className="is-drawer-close:hidden">User Management</span>
             </Link>
         </li>
 
