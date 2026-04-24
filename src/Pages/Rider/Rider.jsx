@@ -11,6 +11,7 @@ const Rider = () => {
     handleSubmit,
     formState: { errors },
     control,
+    reset
   } = useForm();
 
   const axiosSecure = useAxiosSecure();
@@ -35,6 +36,7 @@ const Rider = () => {
     .then((res) => {
         console.log(res.data);
       if (res.data.insertedId) {
+        reset()
         Swal.fire({
           position: "top",
           icon: "success",
@@ -100,7 +102,8 @@ const Rider = () => {
               <label className="block text-sm font-medium mb-1">
                 Your Email
               </label>
-              <input value={user.email} 
+              <input 
+              value={user.email} 
                 readOnly
                 {...register("email", { required: "Email is required" })}
                 type="email"
