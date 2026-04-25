@@ -15,24 +15,38 @@ const Usermanagement = () => {
       return res.data;
     },
   });
-console.log(users)
+  console.log(users);
   const handleUserRole = (user, role) => {
     const roleInfo = { role: role };
-    axiosSecure.patch(`/users/${user?._id}`, roleInfo).then((res) => {
-      if (res.data.modifiedCount) {
-        refetch();
-        Swal.fire({
-          position: "top",
-          icon: "success",
-          title:
-            role === "admin"
-              ? `${user.displayName} marked as an admin`
-              : `${user.displayName} removed from admin`,
-          showConfirmButton: false,
-          timer: 1500,
+
+    Swal.fire({
+      title: "Are you sure?",
+      text: `You won't be  ${role} transfer`,
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed)
+        axiosSecure.patch(`/users/${user?._id}`, roleInfo).then((res) => {
+          if (res.data.modifiedCount) {
+            refetch();
+            Swal.fire({
+              position: "top",
+              icon: "success",
+              title:
+                role === "admin"
+                  ? `${user.displayName} marked as an admin`
+                  : `${user.displayName} removed from admin`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
         });
-      }
+
     });
+
   };
 
   const blockAdmin = (user) => {
