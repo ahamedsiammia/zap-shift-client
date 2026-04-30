@@ -22,7 +22,7 @@ const Usermanagement = () => {
     Swal.fire({
       title: "Are you sure?",
       text: `You won't be  ${role} transfer`,
-      icon: "warning",
+      icon: "warning", 
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
